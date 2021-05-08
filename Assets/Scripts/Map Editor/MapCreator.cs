@@ -9,7 +9,10 @@ public class MapCreator : EditorWindow
     private Transform parent = null;
 
     private bool paintMode = false;
+    private bool moveMode = false;
     private bool ParentSelect = false;
+
+    private bool DragOperation = false;
 
 
     private List<FieldNode> Selected = new List<FieldNode>();
@@ -38,8 +41,8 @@ public class MapCreator : EditorWindow
             }
         }
 
-        paintMode = GUILayout.Toggle(paintMode && parent, "Start painting", "Button", GUILayout.Height(60f));
-
+        paintMode = GUILayout.Toggle(paintMode && parent && !moveMode, "Paint Mode", "Button", GUILayout.Height(30f));
+        moveMode = GUILayout.Toggle(moveMode && !paintMode, "Move Mode", "Button", GUILayout.Height(30f));
 
         GUILayout.Label("Parent");
         EditorGUILayout.BeginHorizontal();
@@ -84,11 +87,13 @@ public class MapCreator : EditorWindow
         Ray guiRay = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
         Vector3 mousePosition = guiRay.origin - guiRay.direction * (guiRay.origin.z / guiRay.direction.z);
 
-
-
         if (paintMode && parent)
         {
             PaintMode(mousePosition);
+        }
+        else if (moveMode)
+        {
+            MoveMode(mousePosition);
         }
         else
         {
@@ -96,6 +101,36 @@ public class MapCreator : EditorWindow
         }
     }
 
+    void MoveMode(Vector3 Position)
+    {
+        if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
+        {
+            DragOperation = true;
+            Debug.Log(DragOperation);
+            Event.current.Use();
+        }
+
+        if (Event.current.type == EventType.MouseMove && DragOperation)
+        {
+            foreach (var node in Selected)
+            {
+                node.SetPosition(Position);
+            }
+            Event.current.Use();
+        }
+
+        if (Event.current.type == EventType.MouseUp)
+        {
+            DragOperation = false;
+            Debug.Log(DragOperation);
+            Event.current.Use();
+        }
+
+        if (Event.current.type == EventType.MouseDrag)
+        {
+            Debug.Log("drag?");
+        }
+    }
 
     void PaintMode(Vector3 Position)
     {
@@ -126,6 +161,8 @@ public class MapCreator : EditorWindow
                     ResetSelection();
                 }
 
+
+
                 SelectNode(node);
             }
             else
@@ -144,7 +181,7 @@ public class MapCreator : EditorWindow
         obj.transform.parent = parent;
 
         // Allow the use of Undo (Ctrl+Z, Ctrl+Y).
-        Undo.RegisterCreatedObjectUndo(obj, "");
+        Undo.RegisterCreatedObjectUndo(obj, "Create Node");
     }
 
     FieldNode FindNode(Vector3 Position)
@@ -164,6 +201,9 @@ public class MapCreator : EditorWindow
 
     void SelectNode(FieldNode select)
     {
+        if (Selected.Contains(select))
+            return;
+
         select.Gizmo_Selected = true;
         Selected.Add(select);
         Repaint();
@@ -171,6 +211,9 @@ public class MapCreator : EditorWindow
 
     void DeselectNode(FieldNode select)
     {
+        if (!Selected.Contains(select))
+            return;
+
         select.Gizmo_Selected = false;
         Selected.Remove(select);
         Repaint();

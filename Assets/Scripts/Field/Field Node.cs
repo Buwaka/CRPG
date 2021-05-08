@@ -9,7 +9,7 @@ public class FieldNode : MonoBehaviour
 
 
     //gizmo shit
-    public float Gizmo_Size = 1.0f;
+    public float Gizmo_Size = 0.5f;
     public bool Gizmo_Selected = false;
 
 
@@ -72,7 +72,15 @@ public class FieldNode : MonoBehaviour
     }
 
 
+    public void Move(Vector3 relative)
+    {
+        transform.position += relative;
+    }
 
+    public void SetPosition(Vector3 position)
+    {
+        transform.position = position;
+    }
 
     public void DrawArrow(Vector3 from, Vector3 to, Color color, float arrowHeadLength = 0.25f, float arrowHeadAngle = 10.0f)
     {
@@ -88,7 +96,11 @@ public class FieldNode : MonoBehaviour
 
     void OnDrawGizmos()
     {
-
+        if (Gizmo_Selected)
+            Gizmos.color = Color.yellow;
+        else
+            Gizmos.color = Color.white;
+        Gizmos.DrawSphere(transform.position, Gizmo_Size);
 
         for (int i = 0; i < Connections.Count; i++)
         {
@@ -96,11 +108,5 @@ public class FieldNode : MonoBehaviour
             var color = Color.Lerp(Color.blue, Color.red, (float)i / Connections.Count);
             DrawArrow(transform.position, connection.transform.position, color);
         }
-
-        if (Gizmo_Selected)
-            Gizmos.color = Color.yellow;
-        else
-            Gizmos.color = Color.white;
-        Gizmos.DrawSphere(transform.position, Gizmo_Size);
     }
 }
