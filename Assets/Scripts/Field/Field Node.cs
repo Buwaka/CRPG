@@ -6,6 +6,7 @@ using UnityEngine;
 public class FieldNode : MonoBehaviour
 {
     public List<FieldNode> Connections = new List<FieldNode>();
+    private GameObject tile;
 
 
     //gizmo shit
@@ -16,7 +17,7 @@ public class FieldNode : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        tile = TileManager.GetTile(TileManager.TileType.Default);
     }
 
     // Update is called once per frame
