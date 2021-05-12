@@ -35,21 +35,21 @@ public class TileManager : MonoBehaviour
     }
 
 
-    public static GameObject GetTile(TileType type)
-    {
-        GameObject tile = DefaultTile;
-        switch (type)
-        {
-                case TileType.Default:
-                    tile = DefaultTile;
-                    break;
-            case TileType.reachable:
-                tile = ReachableTile;
-                break;
-        }
+    //public static GameObject GetTile(TileType type)
+    //{
+    //    GameObject tile = DefaultTile;
+    //    switch (type)
+    //    {
+    //            case TileType.Default:
+    //                tile = DefaultTile;
+    //                break;
+    //        case TileType.reachable:
+    //            tile = ReachableTile;
+    //            break;
+    //    }
 
-        return Instantiate(tile);
-    }
+    //    return Instantiate(tile);
+    //}
 
 
 }

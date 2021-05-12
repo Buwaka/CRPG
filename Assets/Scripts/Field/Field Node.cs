@@ -9,21 +9,21 @@ public class FieldNode : MonoBehaviour
     private GameObject tile;
 
 
-    //gizmo shit
-    public float Gizmo_Size = 0.5f;
-    public bool Gizmo_Selected = false;
-
-
     // Start is called before the first frame update
     void Start()
     {
-        tile = TileManager.GetTile(TileManager.TileType.Default);
+        //tile = TileManager.GetTile(TileManager.TileType.Default);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public List<FieldNode> GetConnections()
+    {
+        return Connections;
     }
 
     public void Connect(FieldNode node)
@@ -83,6 +83,17 @@ public class FieldNode : MonoBehaviour
         transform.position = position;
     }
 
+    public Vector3 GetPosition()
+    {
+        return transform.position;
+    }
+
+
+    #region Gizmo
+    //gizmo shit
+    public float Gizmo_Size = 0.5f;
+    public bool Gizmo_Selected = false;
+
     public void DrawArrow(Vector3 from, Vector3 to, Color color, float arrowHeadLength = 0.25f, float arrowHeadAngle = 10.0f)
     {
         Gizmos.color = color;
@@ -110,4 +121,6 @@ public class FieldNode : MonoBehaviour
             DrawArrow(transform.position, connection.transform.position, color);
         }
     }
+
+    #endregion
 }
