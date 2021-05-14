@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class FieldNode : MonoBehaviour
 {
-    public List<FieldNode> Connections = new List<FieldNode>();
+    [SerializeField]
+    private List<FieldNode> Connections = new List<FieldNode>();
     private GameObject tile;
 
 

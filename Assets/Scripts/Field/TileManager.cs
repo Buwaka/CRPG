@@ -3,53 +3,62 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//public static ComboCreator _instance;
-//public static ComboCreator Instance
-//{
-//get
-//{
-//    if (_instance == null)
-//    {
-//        _instance = GameObject.FindObjectOfType<ComboCreator>();
-
-//        if (_instance == null)
-//        {
-//            GameObject container = new GameObject("ComboCreator");
-//            _instance = container.AddComponent<ComboCreator>();
-//        }
-//    }
-
-//    return _instance;
-//}
-//}
-
 public class TileManager : MonoBehaviour
 {
-    private static GameObject DefaultTile;
-    private static GameObject ReachableTile;
+    private static TileManager _instance;
+    public static TileManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = GameObject.FindObjectOfType<TileManager>();
+
+                if (_instance == null)
+                {
+                    GameObject container = new GameObject("TileManager");
+                    _instance = container.AddComponent<TileManager>();
+                }
+            }
+
+            return _instance;
+        }
+    }
+
+    [SerializeField]
+    private GameObject DefaultTile = null;
+
 
     public enum TileType
     {
         Default,
-    reachable
     }
 
+    public GameObject GetTilePrefab(TileType type)
+    {
+        GameObject tile = DefaultTile;
+        switch (type)
+        {
+            case TileType.Default:
+                tile = DefaultTile;
+                break;
+        }
 
-    //public static GameObject GetTile(TileType type)
-    //{
-    //    GameObject tile = DefaultTile;
-    //    switch (type)
-    //    {
-    //            case TileType.Default:
-    //                tile = DefaultTile;
-    //                break;
-    //        case TileType.reachable:
-    //            tile = ReachableTile;
-    //            break;
-    //    }
+        return tile;
+    }
 
-    //    return Instantiate(tile);
-    //}
+    public GameObject GetTile(TileType type)
+    {
+        GameObject tile = DefaultTile;
+        switch (type)
+        {
+            case TileType.Default:
+                tile = DefaultTile;
+                break;
+        }
+
+        return Instantiate(tile);
+    }
 
 
 }

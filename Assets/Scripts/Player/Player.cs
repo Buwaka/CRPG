@@ -5,14 +5,14 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public FieldMap StartFieldMap;
-    public GameObject ReachableHighlight = null;
-    public GameObject CurrentPositionHighlight = null;
-
 
     private FieldNode CurrentNode = null;
-
-
     private List<GameObject> Highlights = new List<GameObject>();
+
+    [SerializeField]
+    private GameObject ReachableHighlight = null;
+    [SerializeField]
+    private GameObject CurrentPositionHighlight = null;
 
     // Start is called before the first frame update
     void Start()
@@ -20,12 +20,22 @@ public class Player : MonoBehaviour
         if (StartFieldMap)
         {
             CurrentNode = StartFieldMap.GetEntryPoint();
-            SetPosition(CurrentNode.GetPosition());
+            if (CurrentNode)
+            {
+                SetPosition(CurrentNode.GetPosition());
+            }
 
-            ResetHighlights();
-            HighlightReachableNodes();
-            HighlightPosition();
+
+            Reset();
         }
+    }
+
+    void Reset()
+    {
+        ResetHighlights();
+
+        HighlightReachableNodes();
+        HighlightPosition();
     }
 
     void HighlightPosition()
@@ -73,7 +83,11 @@ public class Player : MonoBehaviour
 
     void MoveNode(FieldNode node)
     {
-        Debug.Log("test");
+        CurrentNode = node;
+
+        SetPosition(node.GetPosition());
+
+        Reset();
     }
 
     void CheckInput()

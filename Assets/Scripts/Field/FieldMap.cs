@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class FieldMap : MonoBehaviour
 {
-    public FieldNode EntryPoint;
+    [SerializeField]
+    private FieldNode EntryPoint;
 
     public FieldNode GetEntryPoint()
     {
